@@ -21,9 +21,20 @@ def book_helper(book:dict) -> Book:
 async def create_book(book: BookCreate):
     try:
         new_book = book.model_dump() #lo convierte en un diccionario
-        result= await book_collection.insert_one(new_book)
-        book_created = await book_collection.find_one({"_id": result .inserted_id})
+        result= await book_collection.insert_one(new_book)#insert_many es insertar un array
+        book_created = await book_collection.find_one({"_id": result .inserted_id}) #find, update_one, delete_one
         return book_helper(book_created)
 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+    
+#controlador para obtener la lista de libros
+async def get_book_list():
+    try:
+        books = []
+        result= book_collection.find({}) #no puede ser asincrono porque si saltariamos al for sin tener el array cargado
+        async for item in result:
+            books.append(book_helper(item))
+        return books
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
