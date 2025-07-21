@@ -7,4 +7,4 @@ class BookCreate(BaseModel):
     pages: Optional[int]
 
 class Book(BookCreate):
-    id:str
+    id:str #en mongo el id es un string
