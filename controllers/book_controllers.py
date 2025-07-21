@@ -38,3 +38,4 @@ async def get_book_list():
         return books
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+#GET obtener un libro por id
