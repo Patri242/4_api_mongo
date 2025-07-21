@@ -4,3 +4,4 @@
 venv 
 #archivo especifico de una carpeta images/foto.jpg
 #carpeta pdf/ o pdf
+__pycache__
