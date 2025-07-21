@@ -2,6 +2,7 @@ from fastapi import HTTPException
 #como vamos a conectar con BBDD tengo que importar la conexion
 from db.mongo import book_collection
 from models.book_models import Book, BookCreate
+from bson import ObjectId #libreria viene con pymongo
 
 
 #vamos a crear una funcion que nos permita convertir el tipo de mongo (objeto) en una clase (class) Book de python. Se va a llamar book_helper y va a transformar los datos de python a mongo. nuestra propia funcion de parseo.
@@ -39,3 +40,13 @@ async def get_book_list():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 #GET obtener un libro por id
+async def get_book_by_id(book_id:str):
+    try:
+        if not ObjectId.is_valid(book_id):
+            raise HTTPException(status_code=400,detail="El Id del libro no es valido")
+        book= await book_collection.find_one({'_id': ObjectId(book_id)})
+        if book:
+            return book_helper(book)
+        return None
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
