@@ -5,7 +5,11 @@ from controllers import book_controllers
 router= APIRouter()
 
 #POST crear un libro
-@router.post('/', status_code=200)
-
+@router.post('/', status_code=201)
 async def create_book(book: BookCreate):
     return await book_controllers.create_book(book)
+
+#obtener lista de libros
+@router.get('/', status_code=200)
+async def get_book_list():
+    return await book_controllers.get_book_list()
